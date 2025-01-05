@@ -2,6 +2,7 @@ package com.crazyurus.bydota.qrcodebypass
 
 import android.os.Bundle
 import android.os.Debug
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -38,6 +39,12 @@ class MainActivity: AppCompatActivity() {
         return version.startsWith("13.1.7")
     }
 
+    private fun isDiLink5(): Boolean {
+        val version = getDiLinkVersion();
+
+        return version.startsWith("23") || version.startsWith("34")
+    }
+
     private fun checkStatus() {
         val button = findViewById<Button>(R.id.button)
         val button2 = findViewById<Button>(R.id.button2)
@@ -71,6 +78,9 @@ class MainActivity: AppCompatActivity() {
 
         val button = findViewById<Button>(R.id.button)
         val button2 = findViewById<Button>(R.id.button2)
+        val textViewADB = findViewById<TextView>(R.id.textView5)
+
+        textViewADB.visibility = if (isDiLink5()) View.VISIBLE else View.GONE
 
         if (isDiLink3()) {
             button.isEnabled = false
@@ -80,11 +90,11 @@ class MainActivity: AppCompatActivity() {
         } else {
             SaveReadManager.getInstance().init(this, object: SaveReadManager.IServiceConnectListener {
                 override fun onBinderDied() {}
-                override fun onServiceConnected() {}
+                override fun onServiceConnected() {
+                    checkStatus()
+                }
                 override fun onServiceDisconnected() {}
             })
-
-            checkStatus()
         }
 
         button.setOnClickListener {
