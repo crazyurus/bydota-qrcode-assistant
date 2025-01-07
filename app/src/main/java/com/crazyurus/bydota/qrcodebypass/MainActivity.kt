@@ -2,7 +2,6 @@ package com.crazyurus.bydota.qrcodebypass
 
 import android.os.Bundle
 import android.os.Debug
-import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -33,16 +32,29 @@ class MainActivity: AppCompatActivity() {
         return ""
     }
 
-    private fun isDiLink3(): Boolean {
-        val version = getDiLinkVersion();
+    private fun isDiLinkSupport(): Boolean {
+        val version = getDiLinkVersion()
+        val whiteList = arrayOf(
+            "13.1.22",
+            "15",
+            "16",
+            "17",
+            "18",
+            "21",
+            "23"
+        )
 
-        return version.startsWith("13.1.7")
+        return whiteList.find { version.startsWith(it) } != null
     }
 
-    private fun isDiLink5(): Boolean {
-        val version = getDiLinkVersion();
+    private fun isNotDiLinkSupport(): Boolean {
+        val version = getDiLinkVersion()
+        val whiteList = arrayOf(
+            "13.1.7",
+            "26"
+        )
 
-        return version.startsWith("23") || version.startsWith("34")
+        return whiteList.find { version.startsWith(it) } != null
     }
 
     private fun checkStatus() {
@@ -69,32 +81,40 @@ class MainActivity: AppCompatActivity() {
         }
 
         val version = getDiLinkVersion()
+        val textView3 = findViewById<TextView>(R.id.textView3)
+        val textVersion = findViewById<TextView>(R.id.textVersion)
 
         if (version.isEmpty()) {
             finish()
         } else {
-            findViewById<TextView>(R.id.textView3).text = "当前多媒体版本 ${version}"
+            textView3.text = "当前多媒体版本 ${version}"
         }
+
+        textVersion.text = "版本：" + packageManager.getPackageInfo(packageName, 0).versionName
 
         val button = findViewById<Button>(R.id.button)
         val button2 = findViewById<Button>(R.id.button2)
-        val textViewADB = findViewById<TextView>(R.id.textView5)
 
-        textViewADB.visibility = if (isDiLink5()) View.VISIBLE else View.GONE
+        if (isDiLinkSupport()) {
+            textView3.text = "✅ 支持" + textView3.text
 
-        if (isDiLink3()) {
-            button.isEnabled = false
-            button2.isEnabled = false
-
-            Toast.makeText(this, "暂不支持 DiLink 3.0 的 UI 3.0 版本", Toast.LENGTH_SHORT).show()
-        } else {
-            SaveReadManager.getInstance().init(this, object: SaveReadManager.IServiceConnectListener {
+            SaveReadManager.getInstance().init(this, object : SaveReadManager.IServiceConnectListener {
                 override fun onBinderDied() {}
                 override fun onServiceConnected() {
                     checkStatus()
                 }
+
                 override fun onServiceDisconnected() {}
             })
+        } else if (isNotDiLinkSupport()) {
+            button.isEnabled = false
+            button2.isEnabled = false
+
+            textView3.text = "❌ 不支持" + textView3.text
+
+            Toast.makeText(this, "暂不支持你的 DiLink 版本", Toast.LENGTH_SHORT).show()
+        } else {
+            textView3.text = "可能支持" + textView3.text
         }
 
         button.setOnClickListener {
