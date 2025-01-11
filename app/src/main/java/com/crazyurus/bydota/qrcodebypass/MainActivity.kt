@@ -1,5 +1,6 @@
 package com.crazyurus.bydota.qrcodebypass
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Debug
 import android.widget.Button
@@ -15,6 +16,7 @@ import com.byd.library.SaveReadManager
 class MainActivity: AppCompatActivity() {
     private val filePath = "/collect2/cloudservice/"
     private val fileName = "salesMark.dat"
+    private var supportSaveReadManager = false
 
     private fun getDiLinkVersion(): String {
         if (Debug.isDebuggerConnected()) {
@@ -36,12 +38,12 @@ class MainActivity: AppCompatActivity() {
         val version = getDiLinkVersion()
         val whiteList = arrayOf(
             "13.1.22",
-            "15",
-            "16",
-            "17",
-            "18",
-            "21",
-            "23"
+            "15.1.22",
+            "16.",
+            "17.",
+            "18.",
+            "21.",
+            "23."
         )
 
         return whiteList.find { version.startsWith(it) } != null
@@ -50,8 +52,15 @@ class MainActivity: AppCompatActivity() {
     private fun isNotDiLinkSupport(): Boolean {
         val version = getDiLinkVersion()
         val whiteList = arrayOf(
+            "2.",
+            "4.",
+            "5.",
+            "7.",
             "13.1.7",
-            "26"
+            "15.1.7",
+            "26.",
+            "36.",
+            "42."
         )
 
         return whiteList.find { version.startsWith(it) } != null
@@ -68,6 +77,17 @@ class MainActivity: AppCompatActivity() {
             button.isEnabled = false
             button2.isEnabled = true
         }
+    }
+
+    private fun saveFileAction(value: String) {
+        val intent = Intent("byd.intent.action.SAVE_FILE")
+
+        intent.setPackage("com.byd.accountservice")
+        intent.putExtra("file_path", filePath)
+        intent.putExtra("file_name", fileName)
+        intent.putExtra("str_value", value)
+
+        sendBroadcast(intent)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,11 +120,15 @@ class MainActivity: AppCompatActivity() {
 
             SaveReadManager.getInstance().init(this, object : SaveReadManager.IServiceConnectListener {
                 override fun onBinderDied() {}
+
                 override fun onServiceConnected() {
                     checkStatus()
+                    supportSaveReadManager = true
                 }
 
-                override fun onServiceDisconnected() {}
+                override fun onServiceDisconnected() {
+                    finish()
+                }
             })
         } else if (isNotDiLinkSupport()) {
             button.isEnabled = false
@@ -118,17 +142,29 @@ class MainActivity: AppCompatActivity() {
         }
 
         button.setOnClickListener {
-            SaveReadManager.getInstance().saveFile(filePath, fileName, "crazyurus")
+            val value = "crazyurus"
+
+            if (supportSaveReadManager) {
+                SaveReadManager.getInstance().saveFile(filePath, fileName, value)
+                checkStatus()
+            } else {
+                saveFileAction(value)
+            }
 
             Toast.makeText(this, "设置成功，请插入 U 盘", Toast.LENGTH_SHORT).show()
-            checkStatus()
         }
 
         button2.setOnClickListener {
-            SaveReadManager.getInstance().saveFile(filePath, fileName, "di_cloud_sales_m")
+            val value = "di_cloud_sales_m"
+
+            if (supportSaveReadManager) {
+                SaveReadManager.getInstance().saveFile(filePath, fileName, value)
+                checkStatus()
+            } else {
+                saveFileAction(value)
+            }
 
             Toast.makeText(this, "设置成功", Toast.LENGTH_SHORT).show()
-            checkStatus()
         }
     }
 }

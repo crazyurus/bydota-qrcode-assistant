@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="124dp"
+        android:layout_marginBottom="90dp"
         android:text="作者：Cr4zy Uru5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -98,7 +98,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="150dp"
         android:layout_marginEnd="24dp"
-        android:text="若出现多媒体升级验证码输入框，请点击下载工具"
+        android:text="若出现多媒体升级验证码输入框，请点击链接下载工具"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button2" />
@@ -112,6 +112,43 @@
         android:layout_marginEnd="24dp"
         android:autoLink="web"
         android:text="https://drive.uc.cn/s/68e04458259c4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button2" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="210dp"
+        android:layout_marginEnd="24dp"
+        android:text="二维码助手的新版本会通过以下链接更新，提取码：Gbb5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button2" />
+
+    <TextView
+        android:id="@+id/textLink2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="240dp"
+        android:layout_marginEnd="24dp"
+        android:autoLink="web"
+        android:text="https://pan.quark.cn/s/b6f4d69c7c94"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button2" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="270dp"
+        android:layout_marginEnd="24dp"
+        android:text="二维码助手完全免费，请勿通过任何渠道付费购买"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button2" />
