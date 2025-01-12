@@ -1,6 +1,5 @@
 package com.crazyurus.bydota.qrcodebypass
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Debug
 import android.widget.Button
@@ -34,38 +33,6 @@ class MainActivity: AppCompatActivity() {
         return ""
     }
 
-    private fun isDiLinkSupport(): Boolean {
-        val version = getDiLinkVersion()
-        val whiteList = arrayOf(
-            "13.1.22",
-            "15.1.22",
-            "16.",
-            "17.",
-            "18.",
-            "21.",
-            "23."
-        )
-
-        return whiteList.find { version.startsWith(it) } != null
-    }
-
-    private fun isNotDiLinkSupport(): Boolean {
-        val version = getDiLinkVersion()
-        val whiteList = arrayOf(
-            "2.",
-            "4.",
-            "5.",
-            "7.",
-            "13.1.7",
-            "15.1.7",
-            "26.",
-            "36.",
-            "42."
-        )
-
-        return whiteList.find { version.startsWith(it) } != null
-    }
-
     private fun checkStatus() {
         val button = findViewById<Button>(R.id.button)
         val button2 = findViewById<Button>(R.id.button2)
@@ -79,15 +46,10 @@ class MainActivity: AppCompatActivity() {
         }
     }
 
-    private fun saveFileAction(value: String) {
-        val intent = Intent("byd.intent.action.SAVE_FILE")
+    private fun checkSupport() {
+        val textView3 = findViewById<TextView>(R.id.textView3)
 
-        intent.setPackage("com.byd.accountservice")
-        intent.putExtra("file_path", filePath)
-        intent.putExtra("file_name", fileName)
-        intent.putExtra("str_value", value)
-
-        sendBroadcast(intent)
+        textView3.text = "✅ 支持" + textView3.text
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,49 +69,33 @@ class MainActivity: AppCompatActivity() {
         if (version.isEmpty()) {
             finish()
         } else {
-            textView3.text = "当前多媒体版本 ${version}"
+            textView3.text = "❌ 不支持当前多媒体版本 ${version}"
         }
 
         textVersion.text = "版本：" + packageManager.getPackageInfo(packageName, 0).versionName
+        SaveReadManager.getInstance().init(this, object : SaveReadManager.IServiceConnectListener {
+            override fun onBinderDied() {}
+
+            override fun onServiceConnected() {
+                supportSaveReadManager = true
+
+                checkSupport()
+                checkStatus()
+            }
+
+            override fun onServiceDisconnected() {
+                finish()
+            }
+        })
 
         val button = findViewById<Button>(R.id.button)
         val button2 = findViewById<Button>(R.id.button2)
 
-        if (isDiLinkSupport()) {
-            textView3.text = "✅ 支持" + textView3.text
-
-            SaveReadManager.getInstance().init(this, object : SaveReadManager.IServiceConnectListener {
-                override fun onBinderDied() {}
-
-                override fun onServiceConnected() {
-                    checkStatus()
-                    supportSaveReadManager = true
-                }
-
-                override fun onServiceDisconnected() {
-                    finish()
-                }
-            })
-        } else if (isNotDiLinkSupport()) {
-            button.isEnabled = false
-            button2.isEnabled = false
-
-            textView3.text = "❌ 不支持" + textView3.text
-
-            Toast.makeText(this, "暂不支持你的 DiLink 版本", Toast.LENGTH_SHORT).show()
-        } else {
-            textView3.text = "可能支持" + textView3.text
-        }
-
         button.setOnClickListener {
             val value = "crazyurus"
 
-            if (supportSaveReadManager) {
-                SaveReadManager.getInstance().saveFile(filePath, fileName, value)
-                checkStatus()
-            } else {
-                saveFileAction(value)
-            }
+            SaveReadManager.getInstance().saveFile(filePath, fileName, value)
+            checkStatus()
 
             Toast.makeText(this, "设置成功，请插入 U 盘", Toast.LENGTH_SHORT).show()
         }
@@ -157,12 +103,8 @@ class MainActivity: AppCompatActivity() {
         button2.setOnClickListener {
             val value = "di_cloud_sales_m"
 
-            if (supportSaveReadManager) {
-                SaveReadManager.getInstance().saveFile(filePath, fileName, value)
-                checkStatus()
-            } else {
-                saveFileAction(value)
-            }
+            SaveReadManager.getInstance().saveFile(filePath, fileName, value)
+            checkStatus()
 
             Toast.makeText(this, "设置成功", Toast.LENGTH_SHORT).show()
         }
