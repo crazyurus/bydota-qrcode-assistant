@@ -15,7 +15,7 @@ import com.byd.library.SaveReadManager
 class MainActivity: AppCompatActivity() {
     private val filePath = "/collect2/cloudservice/"
     private val fileName = "salesMark.dat"
-    private var supportSaveReadManager = false
+    private var isSaveReadManagerConnected = false
 
     private fun getDiLinkVersion(): String {
         if (Debug.isDebuggerConnected()) {
@@ -33,25 +33,6 @@ class MainActivity: AppCompatActivity() {
         return ""
     }
 
-    private fun checkStatus() {
-        val button = findViewById<Button>(R.id.button)
-        val button2 = findViewById<Button>(R.id.button2)
-
-        if (SaveReadManager.getInstance().readFile(filePath + fileName) == "di_cloud_sales_m") {
-            button.isEnabled = true
-            button2.isEnabled = false
-        } else {
-            button.isEnabled = false
-            button2.isEnabled = true
-        }
-    }
-
-    private fun checkSupport() {
-        val textView3 = findViewById<TextView>(R.id.textView3)
-
-        textView3.text = "✅ 支持" + textView3.text
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -65,6 +46,8 @@ class MainActivity: AppCompatActivity() {
         val version = getDiLinkVersion()
         val textView3 = findViewById<TextView>(R.id.textView3)
         val textVersion = findViewById<TextView>(R.id.textVersion)
+        val button = findViewById<Button>(R.id.button)
+        val button2 = findViewById<Button>(R.id.button2)
 
         if (version.isEmpty()) {
             finish()
@@ -77,36 +60,48 @@ class MainActivity: AppCompatActivity() {
             override fun onBinderDied() {}
 
             override fun onServiceConnected() {
-                supportSaveReadManager = true
+                isSaveReadManagerConnected = true
 
-                checkSupport()
-                checkStatus()
+                button.isEnabled = true
+                button2.isEnabled = true
+                textView3.text = "✅ 支持当前多媒体版本 ${version}"
             }
 
             override fun onServiceDisconnected() {
-                finish()
+                isSaveReadManagerConnected = false
             }
         })
-
-        val button = findViewById<Button>(R.id.button)
-        val button2 = findViewById<Button>(R.id.button2)
 
         button.setOnClickListener {
             val value = "crazyurus"
 
-            SaveReadManager.getInstance().saveFile(filePath, fileName, value)
-            checkStatus()
+            if (isSaveReadManagerConnected) {
+                SaveReadManager.getInstance().saveFile(filePath, fileName, value)
 
-            Toast.makeText(this, "设置成功，请插入 U 盘", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "设置成功，请插入 U 盘", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "设置失败", Toast.LENGTH_SHORT).show()
+            }
         }
 
         button2.setOnClickListener {
             val value = "di_cloud_sales_m"
 
-            SaveReadManager.getInstance().saveFile(filePath, fileName, value)
-            checkStatus()
+            if (isSaveReadManagerConnected) {
+                SaveReadManager.getInstance().saveFile(filePath, fileName, value)
 
-            Toast.makeText(this, "设置成功", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "设置成功", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "设置失败", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        if (isSaveReadManagerConnected) {
+            SaveReadManager.getInstance().release()
         }
     }
 }
