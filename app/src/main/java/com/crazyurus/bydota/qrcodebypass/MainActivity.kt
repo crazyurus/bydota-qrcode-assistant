@@ -15,6 +15,7 @@ import com.byd.library.SaveReadManager
 class MainActivity: AppCompatActivity() {
     private val filePath = "/collect2/cloudservice/"
     private val fileName = "salesMark.dat"
+    private val salesMark = "di_cloud_sales_m"
     private var isSaveReadManagerConnected = false
 
     private fun getDiLinkVersion(): String {
@@ -31,6 +32,19 @@ class MainActivity: AppCompatActivity() {
         }
 
         return ""
+    }
+
+    private fun checkStatus() {
+        val button = findViewById<Button>(R.id.button)
+        val button2 = findViewById<Button>(R.id.button2)
+
+        if (SaveReadManager.getInstance().readFile(filePath + fileName) == salesMark) {
+            button.isEnabled = true
+            button2.isEnabled = false
+        } else {
+            button.isEnabled = false
+            button2.isEnabled = true
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,10 +74,9 @@ class MainActivity: AppCompatActivity() {
             override fun onBinderDied() {}
 
             override fun onServiceConnected() {
-                isSaveReadManagerConnected = true
+                checkStatus()
 
-                button.isEnabled = true
-                button2.isEnabled = true
+                isSaveReadManagerConnected = true
                 textView3.text = "✅ 支持当前多媒体版本 ${version}"
             }
 
@@ -73,10 +86,9 @@ class MainActivity: AppCompatActivity() {
         })
 
         button.setOnClickListener {
-            val value = "crazyurus"
-
             if (isSaveReadManagerConnected) {
-                SaveReadManager.getInstance().saveFile(filePath, fileName, value)
+                SaveReadManager.getInstance().saveFile(filePath, fileName, "crazyurus")
+                checkStatus()
 
                 Toast.makeText(this, "设置成功，请插入 U 盘", Toast.LENGTH_SHORT).show()
             } else {
@@ -85,10 +97,9 @@ class MainActivity: AppCompatActivity() {
         }
 
         button2.setOnClickListener {
-            val value = "di_cloud_sales_m"
-
             if (isSaveReadManagerConnected) {
-                SaveReadManager.getInstance().saveFile(filePath, fileName, value)
+                SaveReadManager.getInstance().saveFile(filePath, fileName, salesMark)
+                checkStatus()
 
                 Toast.makeText(this, "设置成功", Toast.LENGTH_SHORT).show()
             } else {
