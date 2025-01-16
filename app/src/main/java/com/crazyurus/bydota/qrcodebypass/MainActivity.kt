@@ -66,6 +66,8 @@ class MainActivity: AppCompatActivity() {
         val button2 = findViewById<Button>(R.id.button2)
 
         if (version.isEmpty()) {
+            Toast.makeText(this, "需要在 DiLink 车机上运行", Toast.LENGTH_SHORT).show()
+
             finish()
         } else {
             textView3.text = "❌ 不支持当前多媒体版本 ${version}"
