@@ -44,6 +44,8 @@ class MainActivity: AppCompatActivity() {
         } else {
             button.isEnabled = false
             button2.isEnabled = true
+
+            Toast.makeText(this, "已设置跳过二维码，请插入 U 盘", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -88,7 +90,8 @@ class MainActivity: AppCompatActivity() {
         button.setOnClickListener {
             if (isSaveReadManagerConnected) {
                 SaveReadManager.getInstance().saveFile(filePath, fileName, "crazyurus")
-                checkStatus()
+                button.isEnabled = false
+                button2.isEnabled = true
 
                 Toast.makeText(this, "设置成功，请插入 U 盘", Toast.LENGTH_SHORT).show()
             } else {
@@ -99,7 +102,8 @@ class MainActivity: AppCompatActivity() {
         button2.setOnClickListener {
             if (isSaveReadManagerConnected) {
                 SaveReadManager.getInstance().saveFile(filePath, fileName, salesMark)
-                checkStatus()
+                button.isEnabled = true
+                button2.isEnabled = false
 
                 Toast.makeText(this, "设置成功", Toast.LENGTH_SHORT).show()
             } else {

@@ -127,7 +127,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="210dp"
         android:layout_marginEnd="24dp"
-        android:text="二维码助手的新版本会通过以下链接更新，提取码：Gbb5"
+        android:text="二维码助手的新版本会通过以下链接更新"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button2" />
@@ -140,7 +140,7 @@
         android:layout_marginTop="240dp"
         android:layout_marginEnd="24dp"
         android:autoLink="web"
-        android:text="https://pan.quark.cn/s/b6f4d69c7c94"
+        android:text="https://pan.quark.cn/s/f6cc8f418d62"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button2" />
