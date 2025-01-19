@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/Theme.BYDOTAQRCodeBypass"
+    android:theme="@style/Theme.BYDOTAQRCodeBypassMain"
     tools:context="com.crazyurus.bydota.qrcodebypass.MainActivity">
 
     <Button
