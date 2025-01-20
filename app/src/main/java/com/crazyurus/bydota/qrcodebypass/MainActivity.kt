@@ -73,7 +73,7 @@ class MainActivity: AppCompatActivity() {
             textView3.text = getString(R.string.status_not_support, version)
         }
 
-        textVersion.text = getString(R.string.bottom_version,  packageManager.getPackageInfo(packageName, 0).versionName)
+        textVersion.text = getString(R.string.bottom_version, packageManager.getPackageInfo(packageName, 0).versionName)
         SaveReadManager.getInstance().init(this, object : SaveReadManager.IServiceConnectListener {
             override fun onBinderDied() {}
 

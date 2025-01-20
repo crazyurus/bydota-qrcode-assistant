@@ -13,8 +13,6 @@ import com.byd.accountservice.ISaveAndReadFileInterface;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class SaveReadManager {
-    private static final long RETRY_TIME = 5000;
-    private static final String TAG = "SaveReadManager";
     private static final String THREAD_NAME = "bindServiceThread";
     private static volatile SaveReadManager sInstance;
     private Context mContext;
@@ -112,8 +110,7 @@ public class SaveReadManager {
         bindService();
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
-    public void bindService() {
+    private void bindService() {
         if (this.mInterface == null) {
             if (this.mContext == null) {
                 return;
@@ -202,13 +199,5 @@ public class SaveReadManager {
 
     private Handler getMainHandler() {
         return this.mMainThread;
-    }
-
-    private String getSDKVersion() {
-        try {
-            return this.mContext.getPackageManager().getPackageInfo(this.mContext.getPackageName(), 0).versionName;
-        } catch (Exception e) {
-            return "1.0.000.20230308";
-        }
     }
 }
