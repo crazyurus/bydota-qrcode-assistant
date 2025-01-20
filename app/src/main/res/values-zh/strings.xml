@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">BYDOTA 二维码助手</string>
+    <string name="button_skip_qrcode">U 盘升级时跳过扫码</string>
+    <string name="button_resume_qrcode">U 盘升级时恢复扫码</string>
+    <string name="bottom_author">作者：Cr4zy Uru5</string>
+    <string name="bottom_version">版本：%s</string>
+    <string name="text_4">U 盘升级完成后请点击第二个按钮恢复扫码</string>
+    <string name="text_5">不能用于跳过 ADB 开关的暗码验证</string>
+    <string name="text_2">若出现多媒体升级验证码输入框，请点击链接下载工具</string>
+    <string name="text_6">如有新版本会通过以下链接更新</string>
+    <string name="text_7">仅供学习交流使用，且完全免费，请勿通过任何渠道付费购买</string>
+    <string name="text_mobile">需要在 DiLink 车机上运行</string>
+    <string name="status_support">✅ 支持当前多媒体版本 %s</string>
+    <string name="status_not_support">❌ 不支持当前多媒体版本 %s</string>
+    <string name="result_already">已设置跳过二维码，请插入 U 盘</string>
+    <string name="result_success">设置成功，请插入 U 盘</string>
+    <string name="result_success2">设置成功</string>
+    <string name="result_fail">设置失败</string>
+</resources>

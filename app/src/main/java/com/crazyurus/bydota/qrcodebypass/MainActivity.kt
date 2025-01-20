@@ -45,7 +45,7 @@ class MainActivity: AppCompatActivity() {
             button.isEnabled = false
             button2.isEnabled = true
 
-            Toast.makeText(this, "已设置跳过二维码，请插入 U 盘", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.result_already), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -66,14 +66,14 @@ class MainActivity: AppCompatActivity() {
         val button2 = findViewById<Button>(R.id.button2)
 
         if (version.isEmpty()) {
-            Toast.makeText(this, "需要在 DiLink 车机上运行", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.text_mobile), Toast.LENGTH_SHORT).show()
 
             finish()
         } else {
-            textView3.text = "❌ 不支持当前多媒体版本 ${version}"
+            textView3.text = getString(R.string.status_not_support, version)
         }
 
-        textVersion.text = "版本：" + packageManager.getPackageInfo(packageName, 0).versionName
+        textVersion.text = getString(R.string.bottom_version,  packageManager.getPackageInfo(packageName, 0).versionName)
         SaveReadManager.getInstance().init(this, object : SaveReadManager.IServiceConnectListener {
             override fun onBinderDied() {}
 
@@ -81,7 +81,7 @@ class MainActivity: AppCompatActivity() {
                 checkStatus()
 
                 isSaveReadManagerConnected = true
-                textView3.text = "✅ 支持当前多媒体版本 ${version}"
+                textView3.text = getString(R.string.status_support, version)
             }
 
             override fun onServiceDisconnected() {
@@ -95,9 +95,9 @@ class MainActivity: AppCompatActivity() {
                 button.isEnabled = false
                 button2.isEnabled = true
 
-                Toast.makeText(this, "设置成功，请插入 U 盘", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.result_success), Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "设置失败", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.result_fail), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -107,9 +107,9 @@ class MainActivity: AppCompatActivity() {
                 button.isEnabled = true
                 button2.isEnabled = false
 
-                Toast.makeText(this, "设置成功", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.result_success2), Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "设置失败", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.result_fail), Toast.LENGTH_SHORT).show()
             }
         }
     }
