@@ -1,5 +1,8 @@
 package com.crazyurus.bydota.qrcodebypass
 
+import android.content.ComponentName
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Debug
 import android.widget.Button
@@ -9,6 +12,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import com.btet.automap.R
 import com.byd.library.SaveReadManager
 
@@ -16,7 +20,49 @@ class MainActivity: AppCompatActivity() {
     private val filePath = "/collect2/cloudservice/"
     private val fileName = "salesMark.dat"
     private val salesMark = "di_cloud_sales_m"
+    private val countryCodePackageName = "com.byd.countrycodetool"
     private var isSaveReadManagerConnected = false
+    private val whiteListCountry = arrayOf(
+        "856",
+        "43",
+        "32",
+        "359",
+        "357",
+        "385",
+        "420",
+        "45",
+        "372",
+        "358",
+        "33",
+        "49",
+        "30",
+        "36",
+        "353",
+        "39",
+        "371",
+        "370",
+        "352",
+        "356",
+        "31",
+        "48",
+        "351",
+        "40",
+        "421",
+        "386",
+        "34",
+        "46",
+        "354",
+        "47",
+        "41",
+        "423",
+        "377",
+        "379",
+        "44",
+        "972",
+        "90",
+        "81",
+        "82"
+    )
 
     private fun getDiLinkVersion(): String {
         if (Debug.isDebuggerConnected()) {
@@ -29,6 +75,22 @@ class MainActivity: AppCompatActivity() {
 
         if (version != null) {
             return version
+        }
+
+        return ""
+    }
+
+    private fun getCountryCode(): String {
+        if (Debug.isDebuggerConnected()) {
+            return "90"
+        }
+
+        val cls = Class.forName("android.os.SystemProperties")
+        val method = cls.getMethod("get", String::class.java, String::class.java)
+        val countryCode = method.invoke(null, "sys.byd.countrycode", "")?.toString()
+
+        if (countryCode != null) {
+            return countryCode
         }
 
         return ""
@@ -49,6 +111,15 @@ class MainActivity: AppCompatActivity() {
         }
     }
 
+    private fun isCountryCodeToolInstalled(): Boolean {
+        return try {
+            packageManager.getPackageInfo(countryCodePackageName, 0)
+            true
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -60,10 +131,14 @@ class MainActivity: AppCompatActivity() {
         }
 
         val version = getDiLinkVersion()
+        val countryCode = getCountryCode()
+        val isNeedSkip = whiteListCountry.contains(countryCode);
         val textView3 = findViewById<TextView>(R.id.textView3)
+        val textCountryCode = findViewById<TextView>(R.id.textCountryCode)
         val textVersion = findViewById<TextView>(R.id.textVersion)
         val button = findViewById<Button>(R.id.button)
         val button2 = findViewById<Button>(R.id.button2)
+        val button3 = findViewById<Button>(R.id.button3)
 
         if (version.isEmpty()) {
             Toast.makeText(this, getString(R.string.text_mobile), Toast.LENGTH_SHORT).show()
@@ -72,6 +147,16 @@ class MainActivity: AppCompatActivity() {
         } else {
             textView3.text = getString(R.string.status_not_support, version)
         }
+
+        if (countryCode.isEmpty()) {
+            textCountryCode.isVisible = false
+        } else {
+            val introduction = if (isNeedSkip) getString(R.string.text_country_code_need) else getString((R.string.text_country_code_not))
+
+            textCountryCode.text = getString(R.string.text_country_code, countryCode, introduction)
+        }
+
+        button3.isVisible = countryCode.isNotEmpty() && isNeedSkip
 
         textVersion.text = getString(R.string.bottom_version, packageManager.getPackageInfo(packageName, 0).versionName)
         SaveReadManager.getInstance().init(this, object : SaveReadManager.IServiceConnectListener {
@@ -110,6 +195,23 @@ class MainActivity: AppCompatActivity() {
                 Toast.makeText(this, getString(R.string.result_success2), Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this, getString(R.string.result_fail), Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        button3.setOnClickListener {
+            if (isCountryCodeToolInstalled()) {
+                val intent = Intent()
+
+                intent.setComponent(
+                    ComponentName(
+                        countryCodePackageName,
+                        "com.byd.countrycodetool.MainActivity"
+                    )
+                )
+
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, getString(R.string.result_conutry_code_install), Toast.LENGTH_SHORT).show()
             }
         }
     }

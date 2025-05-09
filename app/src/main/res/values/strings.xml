@@ -1,19 +1,24 @@
 <resources>
     <string name="app_name">BYDOTA QR Code Assistant</string>
     <string name="button_skip_qrcode">Skip QR Code</string>
+    <string name="button_country_code">Open Country Code Tool</string>
     <string name="button_resume_qrcode">Resume QR Code</string>
     <string name="bottom_author">Author: Cr4zy Uru5</string>
     <string name="bottom_version">Version: %s</string>
-    <string name="text_4">Please click the second button to resume QR Code after the USB flash drive upgrade is completed.</string>
-    <string name="text_5">Cannot be used to skip the verification of the ADB switch.</string>
-    <string name="text_2">If a verification code input box appears, please click the following link to download the tool.</string>
+    <string name="text_4">Please click the second button to resume QR code after the USB flash drive upgrade is completed.</string>
+    <string name="text_5">Can\'t be used to skip the verification of the ADB switch.</string>
+    <string name="text_2">If a verification code input box appears, please click the following link to generate code.</string>
     <string name="text_6">If there is a new version, it will be updated through the following link.</string>
     <string name="text_7">It is for learning and communication only and is completely free. Please do not pay to purchase through any channels.</string>
     <string name="text_mobile">It needs to run on the DiLink vehicle device</string>
+    <string name="text_country_code">Your country code is %s. %s</string>
+    <string name="text_country_code_need">You can try switching it to China(86) to skip QR code. After the upgrade is completed, you can switch it back.</string>
+    <string name="text_country_code_not">You don\'t need to scan the QR code to upgrade</string>
     <string name="status_support">✅ Support the current version: %s</string>
-    <string name="status_not_support">❌ Don\'t support the current version: %s</string>
-    <string name="result_already">The skipping of the QR Code has been set. Please insert the USB flash drive.</string>
+    <string name="status_not_support">❌ Don\'t support the current version skipping directly: %s</string>
+    <string name="result_already">The skipping of the QR code has been set. Please insert the USB flash drive.</string>
     <string name="result_success">Operation successful. Please insert the USB flash drive</string>
     <string name="result_success2">Operation successful</string>
     <string name="result_fail">Operation failed</string>
+    <string name="result_conutry_code_install">The country code tool is not installed.</string>
 </resources>
