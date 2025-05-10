@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Ассистент QR-кода BYDOTA</string>
+    <string name="button_skip_qrcode">Пропустить QR-код</string>
+    <string name="button_country_code">Открыть инструмент кода страны</string>
+    <string name="button_resume_qrcode">Продолжить с QR-кода</string>
+    <string name="bottom_author">Автор: Cr4zy Uru5</string>
+    <string name="bottom_version">Версия: %s</string>
+    <string name="text_4">Пожалуйста, нажмите на вторую кнопку, чтобы продолжить с QR-кода после завершения обновления с USB-накопителя.</string>
+    <string name="text_5">Не может быть использовано для пропуска проверки переключателя ADB.</string>
+    <string name="text_2">Если появляется поле для ввода проверочного кода, пожалуйста, нажмите на следующую ссылку для генерации кода.</string>
+    <string name="text_6">Если есть новая версия, она будет обновлена по следующей ссылке.</string>
+    <string name="text_7">Используется только для обучения и общения и полностью бесплатен. Пожалуйста, не покупайте его за деньги по любым каналам.</string>
+    <string name="text_mobile">Должен работать на устройстве DiLink для автомобиля</string>
+    <string name="text_country_code">Текущий код страны: %s. %s</string>
+    <string name="text_country_code_need">Вы можете попробовать переключить на Китай(86), чтобы пропустить QR-код. После завершения обновления вы можете переключиться обратно.</string>
+    <string name="text_country_code_not">Для обновления не требуется сканирование QR-кода</string>
+    <string name="status_support">✅ Поддерживается текущая версия: %s</string>
+    <string name="status_support_normal">✅ Текущая версия DiLink: %s</string>
+    <string name="status_not_support">❌ Прямой пропуск текущей версии не поддерживается: %s</string>
+    <string name="result_already">Пропуск QR-кода уже настроен. Пожалуйста, вставьте USB-накопитель.</string>
+    <string name="result_success">Операция успешно выполнена. Пожалуйста, вставьте USB-накопитель</string>
+    <string name="result_success2">Операция успешно выполнена</string>
+    <string name="result_fail">Операция не выполнена</string>
+    <string name="result_conutry_code_install">Инструмент кода страны не установлен.</string>
+</resources>
