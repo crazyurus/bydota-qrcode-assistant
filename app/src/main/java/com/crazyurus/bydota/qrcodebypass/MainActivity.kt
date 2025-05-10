@@ -98,7 +98,7 @@ class MainActivity: AppCompatActivity() {
 
     private fun getIMEI(): String {
         if (Debug.isDebuggerConnected()) {
-            return "123456"
+            return "12345678"
         }
 
         val cls = Class.forName("android.os.SystemProperties")
@@ -181,7 +181,7 @@ class MainActivity: AppCompatActivity() {
         }
 
         if (imei.isNotEmpty()) {
-            textLink.text =  "https://bydota.crazyurus.com/code?imei=" + imei
+            textLink.text =  "https://bydota.crazyurus.com/code?imei=" + imei.substring(imei.length - 6)
         }
 
         textVersion.text = getString(R.string.bottom_version, packageManager.getPackageInfo(packageName, 0).versionName)
