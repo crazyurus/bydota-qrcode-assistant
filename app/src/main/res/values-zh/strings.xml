@@ -15,6 +15,7 @@
     <string name="text_country_code_need">你可以尝试切换到中国(86)来跳过二维码，升级完成后再切回</string>
     <string name="text_country_code_not">你不需要扫二维码即可升级</string>
     <string name="status_support">✅ 支持当前多媒体版本 %s</string>
+    <string name="status_support_normal">✅ 当前多媒体版本 %s</string>
     <string name="status_not_support">❌ 不支持当前多媒体版本直接跳过 %s</string>
     <string name="result_already">已设置跳过二维码，请插入 U 盘</string>
     <string name="result_success">设置成功，请插入 U 盘</string>

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Debug
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -12,7 +13,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.isVisible
 import com.btet.automap.R
 import com.byd.library.SaveReadManager
 
@@ -134,6 +134,7 @@ class MainActivity: AppCompatActivity() {
         val countryCode = getCountryCode()
         val isNeedSkip = whiteListCountry.contains(countryCode);
         val textView3 = findViewById<TextView>(R.id.textView3)
+        val textView4 = findViewById<TextView>(R.id.textView4)
         val textCountryCode = findViewById<TextView>(R.id.textCountryCode)
         val textVersion = findViewById<TextView>(R.id.textVersion)
         val button = findViewById<Button>(R.id.button)
@@ -149,14 +150,18 @@ class MainActivity: AppCompatActivity() {
         }
 
         if (countryCode.isEmpty()) {
-            textCountryCode.isVisible = false
+            textCountryCode.visibility = View.GONE
         } else {
             val introduction = if (isNeedSkip) getString(R.string.text_country_code_need) else getString((R.string.text_country_code_not))
 
             textCountryCode.text = getString(R.string.text_country_code, countryCode, introduction)
+
+            if (!isNeedSkip) {
+                textView3.text = getString(R.string.status_support_normal, version)
+            }
         }
 
-        button3.isVisible = countryCode.isNotEmpty() && isNeedSkip
+        button3.visibility = if (countryCode.isNotEmpty() && isNeedSkip) View.VISIBLE else View.GONE
 
         textVersion.text = getString(R.string.bottom_version, packageManager.getPackageInfo(packageName, 0).versionName)
         SaveReadManager.getInstance().init(this, object : SaveReadManager.IServiceConnectListener {
@@ -167,6 +172,8 @@ class MainActivity: AppCompatActivity() {
 
                 isSaveReadManagerConnected = true
                 textView3.text = getString(R.string.status_support, version)
+                textView4.visibility = View.VISIBLE
+                textCountryCode.visibility = View.GONE
             }
 
             override fun onServiceDisconnected() {

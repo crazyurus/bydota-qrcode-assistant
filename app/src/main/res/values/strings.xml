@@ -11,10 +11,11 @@
     <string name="text_6">If there is a new version, it will be updated through the following link.</string>
     <string name="text_7">It is for learning and communication only and is completely free. Please do not pay to purchase through any channels.</string>
     <string name="text_mobile">It needs to run on the DiLink vehicle device</string>
-    <string name="text_country_code">Your country code is %s. %s</string>
+    <string name="text_country_code">Current country code: %s. %s</string>
     <string name="text_country_code_need">You can try switching it to China(86) to skip QR code. After the upgrade is completed, you can switch it back.</string>
     <string name="text_country_code_not">You don\'t need to scan the QR code to upgrade</string>
     <string name="status_support">✅ Support the current version: %s</string>
+    <string name="status_support_normal">✅ Current DiLink version: %s</string>
     <string name="status_not_support">❌ Don\'t support the current version skipping directly: %s</string>
     <string name="result_already">The skipping of the QR code has been set. Please insert the USB flash drive.</string>
     <string name="result_success">Operation successful. Please insert the USB flash drive</string>
