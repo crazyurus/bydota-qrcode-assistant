@@ -96,6 +96,22 @@ class MainActivity: AppCompatActivity() {
         return ""
     }
 
+    private fun getIMEI(): String {
+        if (Debug.isDebuggerConnected()) {
+            return "123456"
+        }
+
+        val cls = Class.forName("android.os.SystemProperties")
+        val method = cls.getMethod("get", String::class.java, String::class.java)
+        val iemi = method.invoke(null, "ril.imei", "")?.toString()
+
+        if (iemi != null) {
+            return iemi
+        }
+
+        return ""
+    }
+
     private fun checkStatus() {
         val button = findViewById<Button>(R.id.button)
         val button2 = findViewById<Button>(R.id.button2)
@@ -132,11 +148,13 @@ class MainActivity: AppCompatActivity() {
 
         val version = getDiLinkVersion()
         val countryCode = getCountryCode()
+        val imei = getIMEI()
         val isNeedSkip = whiteListCountry.contains(countryCode);
         val textView3 = findViewById<TextView>(R.id.textView3)
         val textView4 = findViewById<TextView>(R.id.textView4)
         val textCountryCode = findViewById<TextView>(R.id.textCountryCode)
         val textVersion = findViewById<TextView>(R.id.textVersion)
+        val textLink = findViewById<TextView>(R.id.textLink)
         val button = findViewById<Button>(R.id.button)
         val button2 = findViewById<Button>(R.id.button2)
         val button3 = findViewById<Button>(R.id.button3)
@@ -151,6 +169,7 @@ class MainActivity: AppCompatActivity() {
 
         if (countryCode.isEmpty()) {
             textCountryCode.visibility = View.GONE
+            button3.visibility = View.GONE
         } else {
             val introduction = if (isNeedSkip) getString(R.string.text_country_code_need) else getString((R.string.text_country_code_not))
 
@@ -161,7 +180,9 @@ class MainActivity: AppCompatActivity() {
             }
         }
 
-        button3.visibility = if (countryCode.isNotEmpty() && isNeedSkip) View.VISIBLE else View.GONE
+        if (imei.isNotEmpty()) {
+            textLink.text =  "https://bydota.crazyurus.com/code?imei=" + imei
+        }
 
         textVersion.text = getString(R.string.bottom_version, packageManager.getPackageInfo(packageName, 0).versionName)
         SaveReadManager.getInstance().init(this, object : SaveReadManager.IServiceConnectListener {
